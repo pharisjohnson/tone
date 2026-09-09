@@ -100,6 +100,9 @@ celerybeat.pid
 # Environments
 .env
 .env.bak*
+# Real filled env files (any environment) — but keep tracked .example templates.
+.env.*
+!.env.*.example
 .venv
 env/
 venv/

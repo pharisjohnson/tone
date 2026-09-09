@@ -70,12 +70,18 @@ MANDATORY_KEYS: tuple[str, ...] = (
 )
 
 # Tier B — additionally required when ENV is not one of DEV_ENV_NAMES.
+#
+# FORK NOTE (Noon Studio Africa self-host): upstream also required
+# INFISICAL_TOKEN/INFISICAL_PROJECT_ID and LOKI_URL/GRAFANA_API_KEY here —
+# those are tonehq's own managed-cloud secrets source and internal Grafana/
+# Loki observability stack, not core app requirements. A single self-hosted
+# VM has neither and doesn't need them (.env is the secrets source; logs go
+# to stdout/docker logs). Dropped so ENV=production is reachable without
+# standing up infra we don't use, while still getting real Secure cookies
+# (see COOKIE_SECURE handling above, which keys off ENV being outside
+# DEV_ENV_NAMES). R2 and BASE_CALL_URL stay mandatory — we do use those.
 MANDATORY_PROD_KEYS: tuple[str, ...] = (
-    "INFISICAL_TOKEN",
-    "INFISICAL_PROJECT_ID",
     "REDIS_URL",
-    "LOKI_URL",
-    "GRAFANA_API_KEY",
     "R2_ACCESS_KEY_ID",
     "R2_SECRET_ACCESS_KEY",
     "R2_BUCKET_NAME",

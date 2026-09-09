@@ -1,0 +1,19 @@
+agents.noonstudio.africa {
+	# Backend API + docs
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+	handle /docs* {
+		reverse_proxy api:8000
+	}
+
+	# Everything else -> Next.js frontend
+	handle {
+		reverse_proxy frontend:3000
+	}
+
+	encode gzip
+	log {
+		output file /data/access.log
+	}
+}

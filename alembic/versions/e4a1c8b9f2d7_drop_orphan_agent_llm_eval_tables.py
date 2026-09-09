@@ -24,9 +24,12 @@ depends_on = None
 
 def upgrade() -> None:
     # Drop in FK-safe order: agent_llm_eval_result references the other two.
-    op.drop_table('agent_llm_eval_result')
-    op.drop_table('agent_llm_eval_run')
-    op.drop_table('agent_llm_eval_question')
+    # IF EXISTS: on a fresh DB built purely from migration history these
+    # tables were never created (they only existed in some deployed envs
+    # outside migration history), so a plain drop_table fails locally.
+    op.execute('DROP TABLE IF EXISTS agent_llm_eval_result')
+    op.execute('DROP TABLE IF EXISTS agent_llm_eval_run')
+    op.execute('DROP TABLE IF EXISTS agent_llm_eval_question')
 
 
 def downgrade() -> None:
